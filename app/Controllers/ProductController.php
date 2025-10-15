@@ -8,4 +8,8 @@ class ProductController {
 
         include "./app/Views/product_list.php";
     }
+    
+    public function test(){
+        echo "This is a test function in ProductController.";
+    }
 }
