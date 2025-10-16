@@ -14,23 +14,23 @@ class ProductModel {
         $db = new Database();
         $conn = $db->connect();
         $sql = "SELECT * FROM products";
-        $result = $conn->query($sql);
-        $products = [];
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
 
-        if($result && $result->num_rows > 0){
-            while($row = $result->fetch_assoc()){
-                $products[] = $row;
-            }
-        }
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $conn = null;
         return $products;
+        
     }
 
     public function addProduct($name, $price){
         $db = new Database();
         $conn = $db->connect();
-        $stmt = $conn->prepare("INSERT INTO products (name, price) VALUES (?, ?)");
-        $stmt->bind_param("sd", $name, $price);
-        return $stmt->execute();
+        $stmt = $conn->prepare("INSERT INTO products (name, price) VALUES (:name, :price)");
+        return $stmt->execute([
+            ':name' => $name,
+            ':price' => $price
+        ]);
     }
 
 }
