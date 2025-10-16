@@ -2,17 +2,19 @@
 require_once "./config/Database.php";
 
 class ProductModel {
-    private $conn;
-    private $db;
+    // private $conn;
+    // private $db;
 
-    public function __construct() {
-        $this->db = new Database();
-        $this->conn = $this->db->connect();
-    }
+    // public function __construct() {
+    //     $this->db = new Database();
+    //     $this->conn = $this->db->connect();
+    // }
 
     public function getAllProducts(){
+        $db = new Database();
+        $conn = $db->connect();
         $sql = "SELECT * FROM products";
-        $result = $this->conn->query($sql);
+        $result = $conn->query($sql);
         $products = [];
 
         if($result && $result->num_rows > 0){
@@ -22,4 +24,13 @@ class ProductModel {
         }
         return $products;
     }
+
+    public function addProduct($name, $price){
+        $db = new Database();
+        $conn = $db->connect();
+        $stmt = $conn->prepare("INSERT INTO products (name, price) VALUES (?, ?)");
+        $stmt->bind_param("sd", $name, $price);
+        return $stmt->execute();
+    }
+
 }

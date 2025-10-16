@@ -1,4 +1,8 @@
 RewriteEngine On
+
+# Nếu file hoặc thư mục không tồn tại
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php [L]
+
+# Chuyển hướng toàn bộ request về index.php
+RewriteRule ^(.*)$ index.php [QSA,L]
